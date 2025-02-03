@@ -233,39 +233,6 @@ private bool CheckPathBlocked(Vector3 start, Vector3 end, Vector3 halfExtents)
 }
 
 
-
-
-
-    /*void OnMouseUp()
-    {
-        Vector3 currentPosition = selectedObject.transform.position;
-
-        // Tamaño del objeto en celdas
-        Vector3 scale = selectedObject.transform.localScale;
-        int objWidth = Mathf.CeilToInt(scale.x / gridManager.cellSize);
-        int objHeight = Mathf.CeilToInt(scale.z / gridManager.cellSize);
-
-        // Posición inicial en la grilla, ajustada al tamaño del objeto
-        Vector2Int gridPosition = CalculateGridPosition(currentPosition, objWidth, objHeight);
-
-        // Verifica si el objeto cabe dentro de la grilla y no ocupa espacio inválido
-        if (IsPlacementValid(gridPosition, objWidth, objHeight))
-        {
-            // Alinea al centro de las celdas que ocupa
-            Vector3 alignedPosition = AlignToGrid(gridPosition, objWidth, objHeight);
-            selectedObject.transform.position = alignedPosition;
-
-            // Marca las nuevas celdas como ocupadas
-            MarkOccupiedCells(gridPosition, objWidth, objHeight);
-        }
-        else
-        {
-            Debug.Log("No se puede colocar el objeto aquí.");
-        }
-
-        selectedObject = null;
-    }*/
-
     bool IsPlacementValid(Vector2Int gridPos, int width, int height)
     {
         if (gridPos.x < 0 || gridPos.y < 0 || gridPos.x + height > gridManager.rows || gridPos.y + width > gridManager.cols)
