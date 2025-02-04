@@ -79,13 +79,25 @@ public class ObjectMover : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (dragPlane.Raycast(ray, out float distance))
         {
-            Vector3 targetPosition = ray.GetPoint(distance) + offset;
+            // Posición objetivo sin restricciones aún
+            Vector3 rawTargetPosition = ray.GetPoint(distance) + offset;
             Vector3 currentPosition = selectedObject.transform.position;
 
+            // Determinar la dirección dominante y bloquear el otro eje:
+            Vector3 delta = rawTargetPosition - currentPosition;
+            if (Mathf.Abs(delta.x) > Mathf.Abs(delta.z))
+            {
+                rawTargetPosition.z = currentPosition.z;  // Mover solo en X
+            }
+            else
+            {
+                rawTargetPosition.x = currentPosition.x;  // Mover solo en Z
+            }
+
+            // Actualizamos el valor de lastMousePosition y aplicamos inclinación (tilt) si corresponde:
             Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
             lastMousePosition = Input.mousePosition;
 
-            // Aplicar rotación
             if (tiltObject != null)
             {
                 float tiltX = Mathf.Clamp(mouseDelta.x * -1, -maxTiltAngle, maxTiltAngle);
@@ -98,23 +110,24 @@ public class ObjectMover : MonoBehaviour
                 );
             }
 
-            // Calcular límites y restricciones
+            // Calcular límites de la grilla y ajustar la posición destino:
             Vector3 objSize = selectedObject.transform.localScale;
-            Vector3 halfExtents = objSize / 2;
-            float minX = objSize.x / 2;
-            float maxX = gridManager.cols * gridManager.cellSize - objSize.x / 2;
-            float minZ = objSize.z / 2;
-            float maxZ = gridManager.rows * gridManager.cellSize - objSize.z / 2;
+            float halfWidth = objSize.x / 2;
+            float halfDepth = objSize.z / 2;
+            float minX = halfWidth;
+            float maxX = gridManager.cols * gridManager.cellSize - halfWidth;
+            float minZ = halfDepth;
+            float maxZ = gridManager.rows * gridManager.cellSize - halfDepth;
+            rawTargetPosition.x = Mathf.Clamp(rawTargetPosition.x, minX, maxX);
+            rawTargetPosition.z = Mathf.Clamp(rawTargetPosition.z, minZ, maxZ);
 
-            targetPosition.x = Mathf.Clamp(targetPosition.x, minX, maxX);
-            targetPosition.z = Mathf.Clamp(targetPosition.z, minZ, maxZ);
-
+            // Movimiento suavizado:
             float moveSpeed = 10f;
-            Vector3 smoothedPosition = Vector3.Lerp(currentPosition, targetPosition, Time.deltaTime * moveSpeed);
+            Vector3 smoothedPosition = Vector3.Lerp(currentPosition, rawTargetPosition, Time.deltaTime * moveSpeed);
             Vector3 movement = smoothedPosition - currentPosition;
 
-            // Verificar colisiones
-            bool pathBlocked = CheckPathBlocked(currentPosition, smoothedPosition, halfExtents);
+            // Verificar colisiones a lo largo del camino:
+            bool pathBlocked = CheckPathBlocked(currentPosition, smoothedPosition, objSize / 2);
             Vector3 newPosition = currentPosition;
 
             if (!pathBlocked)
@@ -126,32 +139,25 @@ public class ObjectMover : MonoBehaviour
                 if (Mathf.Abs(movement.x) > 0.01f)
                 {
                     Vector3 xTestPosition = currentPosition + new Vector3(movement.x, 0, 0);
-                    if (!CheckPathBlocked(currentPosition, xTestPosition, halfExtents))
+                    if (!CheckPathBlocked(currentPosition, xTestPosition, objSize / 2))
                     {
                         newPosition.x = xTestPosition.x;
                     }
                 }
-
                 if (Mathf.Abs(movement.z) > 0.01f)
                 {
                     Vector3 zTestPosition = newPosition + new Vector3(0, 0, movement.z);
-                    if (!CheckPathBlocked(newPosition, zTestPosition, halfExtents))
+                    if (!CheckPathBlocked(newPosition, zTestPosition, objSize / 2))
                     {
                         newPosition.z = zTestPosition.z;
                     }
                 }
             }
 
-            // Aplicar elevación gradual durante el arrastre
-            float targetY = 0.6f;
-            float elevationSpeed = 5f;
-            float currentY = Mathf.Lerp(currentPosition.y, targetY, Time.deltaTime * elevationSpeed);
-            
-            // Actualizar posición final con la nueva altura
-            selectedObject.transform.position = new Vector3(newPosition.x, currentY, newPosition.z);
+            // Actualizamos la posición final sin alterar la Y (se mantiene la altura actual)
+            selectedObject.transform.position = new Vector3(newPosition.x, currentPosition.y, newPosition.z);
         }
     }
-
 
     void OnMouseUp()
     {
@@ -182,7 +188,7 @@ public class ObjectMover : MonoBehaviour
                 Debug.Log("No se puede colocar el objeto aquí.");
             }
 
-            StartCoroutine(SmoothMoveToY(selectedObject, 0f, 0.6f));
+            // Se elimina la llamada a SmoothMoveToY para evitar la elevación en Y
             selectedObject = null;
         }
     }
@@ -203,35 +209,35 @@ public class ObjectMover : MonoBehaviour
 
         tiltObject.transform.rotation = originalRotation;
     }
-private bool CheckPathBlocked(Vector3 start, Vector3 end, Vector3 halfExtents)
-{
-    Vector3 direction = end - start;
-    float distance = direction.magnitude;
-    
-    if (distance < 0.01f) return false;
 
-    // Hacemos un BoxCast para verificar todo el camino
-    RaycastHit[] hits = Physics.BoxCastAll(
-        start,
-        halfExtents * 0.9f, // Reducimos ligeramente el tamaño para evitar falsos positivos
-        direction.normalized,
-        Quaternion.identity,
-        distance,
-        ~LayerMask.GetMask("Ignore Raycast") // Ignora la capa "Ignore Raycast"
-    );
-
-    foreach (var hit in hits)
+    private bool CheckPathBlocked(Vector3 start, Vector3 end, Vector3 halfExtents)
     {
-        // Ignoramos el objeto seleccionado y los triggers
-        if (hit.collider.gameObject != selectedObject && !hit.collider.isTrigger)
+        Vector3 direction = end - start;
+        float distance = direction.magnitude;
+        
+        if (distance < 0.01f) return false;
+
+        // Hacemos un BoxCast para verificar todo el camino
+        RaycastHit[] hits = Physics.BoxCastAll(
+            start,
+            halfExtents * 0.9f, // Reducimos ligeramente el tamaño para evitar falsos positivos
+            direction.normalized,
+            Quaternion.identity,
+            distance,
+            ~LayerMask.GetMask("Ignore Raycast") // Ignora la capa "Ignore Raycast"
+        );
+
+        foreach (var hit in hits)
         {
-            return true; // Camino bloqueado
+            // Ignoramos el objeto seleccionado y los triggers
+            if (hit.collider.gameObject != selectedObject && !hit.collider.isTrigger)
+            {
+                return true; // Camino bloqueado
+            }
         }
+
+        return false; // Camino libre
     }
-
-    return false; // Camino libre
-}
-
 
     bool IsPlacementValid(Vector2Int gridPos, int width, int height)
     {
@@ -302,30 +308,6 @@ private bool CheckPathBlocked(Vector3 start, Vector3 end, Vector3 halfExtents)
         float centerZ = (gridPos.x + (float)height / 2) * gridManager.cellSize;
         return new Vector3(centerX, 0, centerZ);
     }
-    private IEnumerator SmoothMoveToY(GameObject obj, float targetY, float duration, AnimationCurve curve = null)
-    {
-        float elapsedTime = 0f;
-        Vector3 startPos = obj.transform.position;
-        Vector3 targetPos = new Vector3(startPos.x, targetY, startPos.z);
 
-        while (elapsedTime < duration)
-        {
-            float t = elapsedTime / duration;
-
-            // Aplica curva si está disponible
-            if (curve != null)
-            {
-                t = curve.Evaluate(t);
-            }
-
-            obj.transform.position = Vector3.Lerp(startPos, targetPos, t);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        obj.transform.position = targetPos; // Asegura que alcance el destino final
-    }
-
-
-
+    // Se eliminó el método SmoothMoveToY ya que no es necesario
 }
