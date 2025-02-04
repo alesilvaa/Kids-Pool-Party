@@ -27,14 +27,14 @@ public class MomController : MonoBehaviour
             mom.gameObject.SetActive(true);
 
             // Mover a la posición de inicio.
-            yield return StartCoroutine(mom.MoveTo(startPosition));
+            yield return StartCoroutine(mom.MoveTo(startPosition,0.1f));
 
             // Esperar a que la mamá obtenga a su hijo (_isHaveKid se ponga en true).
             yield return new WaitUntil(() => mom.IsHaveKid);
             yield return new WaitForSeconds(0.4f);
 
             // Una vez que ya tiene a su hijo, moverla a la posición final.
-            yield return StartCoroutine(mom.MoveTo(endPosition, false));
+            yield return StartCoroutine(mom.MoveTo(endPosition,1, false));
             
             StartCoroutine(DelayToDisableMom(mom));
             

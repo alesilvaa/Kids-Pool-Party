@@ -55,9 +55,9 @@ public class MomBehaviourScript : MonoBehaviour
     
 
     // Nuevo método para mover la mamá a una posición sin requerir el flag _isReadyToGo.
-    public IEnumerator MoveTo(Transform target, bool isRotate = true)
+    public IEnumerator MoveTo(Transform target,float timeDelay ,bool isRotate = true)
     {
-        yield return StartCoroutine(agentmovement.GotoExit(target, isRotate));
+        yield return StartCoroutine(agentmovement.GotoExit(target,timeDelay ,isRotate));
     }
 
     // Propiedad para que MomController pueda leer el estado de _isHaveKid.

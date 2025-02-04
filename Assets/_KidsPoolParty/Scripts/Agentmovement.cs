@@ -30,9 +30,9 @@ public class Agentmovement : MonoBehaviour
         }
     }
 
-    public IEnumerator GotoExit(Transform target, bool isRotate = true)
+    public IEnumerator GotoExit(Transform target, float timeDelay, bool isRotate = true )
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(timeDelay);
         
         if (isRotate)
         {
@@ -50,6 +50,8 @@ public class Agentmovement : MonoBehaviour
 
         // Ir al destino
         agentAuthoring.SetDestination(target.position);
+        yield return new WaitForSeconds(2.25f);
+        momBehaviourScript.ActivateAnimation(State.walk, false);
     }
     
 }
