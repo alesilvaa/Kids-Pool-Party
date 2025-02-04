@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using ProjectDawn.Navigation.Astar;
 using ProjectDawn.Navigation.Hybrid;
@@ -5,32 +6,50 @@ using UnityEngine;
 
 public class Agentmovement : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
     [SerializeField] private GameObject momFBX;
     [SerializeField] private AgentAuthoring agentAuthoring;
-    [SerializeField] private Transform target;
     [SerializeField] private AgentAstarPathingAuthoring agentAstarPathingAuthoring;
     private bool once;
+    private MomBehaviourScript momBehaviourScript;
 
-    public IEnumerator GotoExit()
+    private void Start()
     {
-        yield return new WaitForSeconds(1.5f);
+        momBehaviourScript = GetComponent<MomBehaviourScript>();
+    }
 
-        if (!once)
+    private IEnumerator RotateSmooth(Transform transformToRotate, Quaternion targetRotation, float duration)
+    {
+        Quaternion startRotation = transformToRotate.rotation;
+        float elapsed = 0f;
+        while (elapsed < duration)
         {
-            // Rotar 180° sobre su pivote en el eje Y
-            momFBX.transform.Rotate(Vector3.up, 180);
-
-            // Esperar un poco antes de moverse
-            yield return new WaitForSeconds(0.5f);
-
-            // Activar la animación de caminar
-            animator.SetBool("walk", true);
-
-            // Ir al destino
-            agentAuthoring.SetDestination(target.position);
-            
-            once = true;
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            transformToRotate.rotation = Quaternion.Slerp(startRotation, targetRotation, t);
+            yield return null;
         }
     }
+
+    public IEnumerator GotoExit(Transform target, bool isRotate = true)
+    {
+        yield return new WaitForSeconds(1f);
+        
+        if (isRotate)
+        {
+            // Calcular la rotación final (180° sobre el eje Y)
+            Quaternion finalRotation = momFBX.transform.rotation * Quaternion.Euler(0, 180, 0);
+
+            // Rotar suavemente durante 1 segundo (ajusta la duración según necesites)
+            yield return StartCoroutine(RotateSmooth(momFBX.transform, finalRotation, 0.45f));
+        }
+
+        
+
+        // Activar la animación de caminar
+        momBehaviourScript.ActivateAnimation(State.walk, true);
+
+        // Ir al destino
+        agentAuthoring.SetDestination(target.position);
+    }
+    
 }
