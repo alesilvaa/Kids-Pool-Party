@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 810938259632625002}
   - component: {fileID: 1778130255681259894}
   - component: {fileID: 7909444487394964301}
+  - component: {fileID: 7052491672051913577}
   m_Layer: 7
   m_Name: YellowMom
   m_TagString: Mom
@@ -60,7 +61,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.34, y: 2.3153553, z: 2.7}
-  m_Center: {x: 0, y: 1.1661916, z: -0.84}
+  m_Center: {x: 0, y: 1.1661916, z: -1}
 --- !u!114 &2325333031414624382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,7 +102,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!114 &5848343898252613393
 MonoBehaviour:
@@ -174,7 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d72058503702eb42aca97d680e69de1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Layers: -1
+  m_Layers: 0
 --- !u!114 &1778130255681259894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,6 +205,21 @@ MonoBehaviour:
   momFBX: {fileID: 9045663314946168345}
   agentAuthoring: {fileID: 5848343898252613393}
   agentAstarPathingAuthoring: {fileID: 7066657658314219720}
+--- !u!114 &7052491672051913577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4844890687570306244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5412cfcb738c3f74b9a712077b4c4866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Radius: 0.5
+  Weight: 1
+  m_Layers: -1
 --- !u!1 &5865736960157743970
 GameObject:
   m_ObjectHideFlags: 0

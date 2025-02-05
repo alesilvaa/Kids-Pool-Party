@@ -1,11 +1,11 @@
-using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectMover : MonoBehaviour
 {
     public GridManager gridManager;
-    private GameObject tiltObject; // Cambiado a private
+    private GameObject tiltObject; // Se asume que es este mismo objeto
     public float maxTiltAngle = 15f;
     public float tiltSpeed = 5f;
     
@@ -14,11 +14,13 @@ public class ObjectMover : MonoBehaviour
     private Plane dragPlane;
     private Vector3 lastMousePosition;
     private Quaternion originalRotation;
+    
+    // Bandera para evitar reproducir el sonido varias veces por arrastre
+    private bool hasPlayedWaterSound = false;
 
     private void Start()
     {
-        //EventsManager.Instance.OnBoxCleared += ReleaseCellsForObject;
-        // Asignar el tiltObject como este mismo GameObject
+        // Asigna este objeto para el tilt
         tiltObject = this.gameObject;
         if (tiltObject != null)
         {
@@ -26,11 +28,6 @@ public class ObjectMover : MonoBehaviour
         }
     }
     
-    private void OnDestroy()
-    {
-        //EventsManager.Instance.OnBoxCleared -= ReleaseCellsForObject;
-    }
-
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -55,7 +52,8 @@ public class ObjectMover : MonoBehaviour
             if (hit.collider.CompareTag("Movable"))
             {
                 selectedObject = hit.collider.gameObject;
-                if (selectedObject != this.gameObject) return;
+                if (selectedObject != this.gameObject)
+                    return;
                 
                 dragPlane = new Plane(Vector3.up, hit.point);
                 offset = selectedObject.transform.position - hit.point;
@@ -65,8 +63,9 @@ public class ObjectMover : MonoBehaviour
                 {
                     originalRotation = tiltObject.transform.rotation;
                 }
-
-                // Eliminamos la llamada a SmoothMoveToY aquí
+                
+                // Reiniciamos la bandera al iniciar el arrastre
+                hasPlayedWaterSound = false;
                 ClearOccupiedCells(selectedObject);
             }
         }
@@ -74,27 +73,27 @@ public class ObjectMover : MonoBehaviour
 
     void OnMouseDrag()
     {
-        if (selectedObject != this.gameObject) return;
+        if (selectedObject != this.gameObject)
+            return;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (dragPlane.Raycast(ray, out float distance))
         {
-            // Posición objetivo sin restricciones aún
+            // Calculamos la posición destino sin restricciones
             Vector3 rawTargetPosition = ray.GetPoint(distance) + offset;
             Vector3 currentPosition = selectedObject.transform.position;
-
-            // Determinar la dirección dominante y bloquear el otro eje:
             Vector3 delta = rawTargetPosition - currentPosition;
+            
+            // Se mueve solo en X o en Z, según cuál sea mayor
             if (Mathf.Abs(delta.x) > Mathf.Abs(delta.z))
             {
-                rawTargetPosition.z = currentPosition.z;  // Mover solo en X
+                rawTargetPosition.z = currentPosition.z;  // Solo X
             }
             else
             {
-                rawTargetPosition.x = currentPosition.x;  // Mover solo en Z
+                rawTargetPosition.x = currentPosition.x;  // Solo Z
             }
 
-            
             Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
             lastMousePosition = Input.mousePosition;
 
@@ -110,7 +109,7 @@ public class ObjectMover : MonoBehaviour
                 );
             }
 
-            
+            // Restricciones para mantener el objeto dentro del grid
             Vector3 objSize = selectedObject.transform.localScale;
             float halfWidth = objSize.x / 2;
             float halfDepth = objSize.z / 2;
@@ -121,12 +120,19 @@ public class ObjectMover : MonoBehaviour
             rawTargetPosition.x = Mathf.Clamp(rawTargetPosition.x, minX, maxX);
             rawTargetPosition.z = Mathf.Clamp(rawTargetPosition.z, minZ, maxZ);
 
-            // Movimiento suavizado:
+            // Movimiento suavizado
             float moveSpeed = 10f;
             Vector3 smoothedPosition = Vector3.Lerp(currentPosition, rawTargetPosition, Time.deltaTime * moveSpeed);
             Vector3 movement = smoothedPosition - currentPosition;
-
-            // Verificar colisiones a lo largo del camino:
+            
+            // Si hay movimiento significativo y no se ha reproducido el sonido aún, lo reproducimos
+            if ((Mathf.Abs(movement.x) > 0.01f || Mathf.Abs(movement.z) > 0.01f) && !hasPlayedWaterSound)
+            {
+                SoundManager.Instance.PlayWaterSound();
+                hasPlayedWaterSound = true;
+            }
+            
+            // Verificar colisiones a lo largo del camino
             bool pathBlocked = CheckPathBlocked(currentPosition, smoothedPosition, objSize / 2);
             Vector3 newPosition = currentPosition;
 
@@ -162,14 +168,13 @@ public class ObjectMover : MonoBehaviour
     {
         if (selectedObject != null)
         {
-            // Restaura la rotación original suavemente
+            // Restaurar la rotación original suavemente
             if (tiltObject != null)
             {
                 StartCoroutine(SmoothRotateToOriginal());
             }
 
             Vector3 currentPosition = selectedObject.transform.position;
-
             Vector3 scale = selectedObject.transform.localScale;
             int objWidth = Mathf.CeilToInt(scale.x / gridManager.cellSize);
             int objHeight = Mathf.CeilToInt(scale.z / gridManager.cellSize);
@@ -188,13 +193,15 @@ public class ObjectMover : MonoBehaviour
             }
             
             selectedObject = null;
+            // Reiniciamos la bandera para el siguiente arrastre
+            hasPlayedWaterSound = false;
         }
     }
 
     private IEnumerator SmoothRotateToOriginal()
     {
         float elapsedTime = 0f;
-        float duration = 0.3f; 
+        float duration = 0.3f;
         Quaternion startRotation = tiltObject.transform.rotation;
 
         while (elapsedTime < duration)
@@ -204,7 +211,6 @@ public class ObjectMover : MonoBehaviour
             tiltObject.transform.rotation = Quaternion.Lerp(startRotation, originalRotation, t);
             yield return null;
         }
-
         tiltObject.transform.rotation = originalRotation;
     }
 
@@ -213,35 +219,33 @@ public class ObjectMover : MonoBehaviour
         Vector3 direction = end - start;
         float distance = direction.magnitude;
         
-        if (distance < 0.01f) return false;
+        if (distance < 0.01f)
+            return false;
 
-        // Hacemos un BoxCast para verificar todo el camino
         RaycastHit[] hits = Physics.BoxCastAll(
             start,
-            halfExtents * 0.9f, 
+            halfExtents * 0.9f,
             direction.normalized,
             Quaternion.identity,
             distance,
-            ~LayerMask.GetMask("Ignore Raycast") // Ignora la capa "Ignore Raycast"
+            ~LayerMask.GetMask("Ignore Raycast") // Ignorar la capa "Ignore Raycast"
         );
 
         foreach (var hit in hits)
         {
-            // Ignoramos el objeto seleccionado y los triggers
             if (hit.collider.gameObject != selectedObject && !hit.collider.isTrigger)
             {
-                return true; // Camino bloqueado
+                return true;
             }
         }
-
-        return false; // Camino libre
+        return false;
     }
 
     bool IsPlacementValid(Vector2Int gridPos, int width, int height)
     {
         if (gridPos.x < 0 || gridPos.y < 0 || gridPos.x + height > gridManager.rows || gridPos.y + width > gridManager.cols)
         {
-            return false; // El objeto se sale de los límites.
+            return false;
         }
 
         for (int x = gridPos.x; x < gridPos.x + height; x++)
@@ -254,7 +258,6 @@ public class ObjectMover : MonoBehaviour
                 }
             }
         }
-
         return true;
     }
 
@@ -306,5 +309,4 @@ public class ObjectMover : MonoBehaviour
         float centerZ = (gridPos.x + (float)height / 2) * gridManager.cellSize;
         return new Vector3(centerX, 0, centerZ);
     }
-    
 }

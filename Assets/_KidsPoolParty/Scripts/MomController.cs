@@ -18,8 +18,6 @@ public class MomController : MonoBehaviour
 
     private void Start()
     {
-       
-
         // Instanciar los slots para la cantidad de moms, colocándolos uno detrás de otro en Z.
         for (int i = 0; i < moms.Count; i++)
         {
@@ -47,33 +45,33 @@ public class MomController : MonoBehaviour
             // La primera mamá en la lista es la que se procesa.
             MomBehaviourScript currentMom = moms[0];
             yield return new WaitUntil(() => currentMom.IsHaveKid);
-            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds(0.2f);
 
             // Una vez que ya tiene a su hijo, moverla a la posición final.
-            yield return StartCoroutine(currentMom.MoveTo(endPosition, 1, false));
-            // Lanza la corrutina para desactivarla con un pequeño retardo.
+            StartCoroutine(currentMom.MoveTo(endPosition, .5f, true));
+            currentMom.GetComponent<BoxCollider>().enabled = false;
             StartCoroutine(DelayToDisableMom(currentMom));
-
-            // Remover la mamá que ya completó su proceso.
             moms.RemoveAt(0);
-
+            yield return new WaitForSeconds(.8f);
             
-
             // Mover cada mamá restante al slot correspondiente (cada una avanza al siguiente slot).
             for (int i = 0; i < moms.Count; i++)
             {
                 // Se asume que el slot i de la lista slots corresponde a la posición destino.
                 StartCoroutine(moms[i].MoveToNexSlot(slots[i].transform));
             }
-
             // Opcional: esperar un momento antes de procesar la siguiente mamá.
             yield return new WaitForSeconds(0.5f);
         }
+        
+        // Cuando ya no quedan madres, se llama a la función OnWinPanel.
+        EventsManager.Instance.WinPanel();
+        SoundManager.Instance.PlayWinSound();
     }
 
     private IEnumerator DelayToDisableMom(MomBehaviourScript mom)
     {
-        yield return new WaitForSeconds(4f); // Espera 4 segundos en la posición final
+        yield return new WaitForSeconds(3f); // Espera 4 segundos en la posición final
         mom.gameObject.SetActive(false);
     }
 }

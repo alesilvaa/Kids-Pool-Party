@@ -9,6 +9,7 @@ public class KidBehaviourScript : MonoBehaviour
     private string kidName;
     private bool isJumping = false;
     private ObjectMover objectMover;
+   
     
     [SerializeField] private List<GameObject> _trailWater;
     
@@ -21,14 +22,15 @@ public class KidBehaviourScript : MonoBehaviour
     
     public IEnumerator JumpToHerMom(Transform momPosition)
     {
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.1f);
         if (!isJumping)
         {
             isJumping = true;
             Debug.Log("Kid: " + kidName + " is jumping to her mom");
-
-            transform.DOJump(momPosition.position, 2f, 1, 1f)
+            SoundManager.Instance.PlaySoundJump();
+            transform.DOJump(momPosition.position, 2f, 1, .25f)
                 .SetEase(Ease.InOutSine);
+            gameObject.GetComponent<BoxCollider>().enabled = false;
             gameObject.transform.SetParent(momPosition);
         }
     }

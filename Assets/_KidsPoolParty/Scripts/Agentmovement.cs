@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using ProjectDawn.Navigation.Astar;
 using ProjectDawn.Navigation.Hybrid;
 using UnityEngine;
@@ -30,18 +31,20 @@ public class Agentmovement : MonoBehaviour
         }
     }
 
-    public IEnumerator GotoExit(Transform target, float timeDelay, bool isRotate = true )
+    public IEnumerator GotoExit(Transform target, float timeDelay, bool isRotate = false )
     {
         yield return new WaitForSeconds(timeDelay);
+        
         
         if (isRotate)
         {
             // Calcular la rotación final (180° sobre el eje Y)
-            Quaternion finalRotation = momFBX.transform.rotation * Quaternion.Euler(0, 180, 0);
+            Quaternion finalRotation = momFBX.transform.rotation * Quaternion.Euler(0, -180, 0);
 
             // Rotar suavemente durante 1 segundo (ajusta la duración según necesites)
-            yield return StartCoroutine(RotateSmooth(momFBX.transform, finalRotation, 0.15f));
+            yield return StartCoroutine(RotateSmooth(momFBX.transform, finalRotation, 0.19f));
         }
+        
 
         
 
@@ -56,11 +59,15 @@ public class Agentmovement : MonoBehaviour
     
     public IEnumerator GoToNextSlot(Transform target)
     {
+        yield return new WaitForSeconds(0.1f);
         momBehaviourScript.ActivateAnimation(State.walk, true);
-        agentAuthoring.SetDestination(target.position);
-        yield return new WaitForSeconds(0.3f);
-        momBehaviourScript.ActivateAnimation(State.walk, false);
-        
+
+        transform.DOMove(target.position, .4f).OnComplete(() =>
+        {
+            momBehaviourScript.ActivateAnimation(State.walk, false);
+        });
     }
+
+
     
 }
