@@ -5,15 +5,19 @@ using UnityEngine;
 public class ObjectMover : MonoBehaviour
 {
     public GridManager gridManager;
-    private GameObject tiltObject; // Se asume que es este mismo objeto
+    public GameObject tiltObject; // Se asume que es este mismo objeto
     public float maxTiltAngle = 15f;
     public float tiltSpeed = 5f;
     
-    private GameObject selectedObject;
+    public GameObject selectedObject;
     private Vector3 offset;
     private Plane dragPlane;
     private Vector3 lastMousePosition;
-    private Quaternion originalRotation;
+    public Quaternion originalRotation;
+    
+    
+    
+    
     
     // Bandera para evitar reproducir el sonido varias veces por arrastre
     private bool hasPlayedWaterSound = false;
@@ -30,6 +34,8 @@ public class ObjectMover : MonoBehaviour
     
     void Update()
     {
+        if (!enabled) return; // Evita cualquier ejecución si el script está deshabilitado
+
         if (Input.GetMouseButtonDown(0))
         {
             OnMouseDown();
@@ -43,6 +49,7 @@ public class ObjectMover : MonoBehaviour
             OnMouseUp();
         }
     }
+
 
     void OnMouseDown()
     {

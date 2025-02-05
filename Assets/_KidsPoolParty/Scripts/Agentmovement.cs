@@ -31,31 +31,37 @@ public class Agentmovement : MonoBehaviour
         }
     }
 
-    public IEnumerator GotoExit(Transform target, float timeDelay, bool isRotate = false )
+    public IEnumerator GotoExit(Transform target, float timeDelay, bool isRotate = false)
     {
+        // Espera el tiempo de retardo
         yield return new WaitForSeconds(timeDelay);
-        
-        
+
+        // Si se requiere rotación, la ejecuta suavemente
         if (isRotate)
         {
-            // Calcular la rotación final (180° sobre el eje Y)
-            Quaternion finalRotation = momFBX.transform.rotation * Quaternion.Euler(0, -180, 0);
-
-            // Rotar suavemente durante 1 segundo (ajusta la duración según necesites)
+            // Calcula la rotación final (180° sobre el eje Y)
+            Quaternion finalRotation = momFBX.transform.rotation * Quaternion.Euler(0, 120, 0);
+            // Rota suavemente durante 0.19 segundos (ajusta la duración si es necesario)
             yield return StartCoroutine(RotateSmooth(momFBX.transform, finalRotation, 0.19f));
         }
-        
 
-        
-
-        // Activar la animación de caminar
+        // Activa la animación de caminar
         momBehaviourScript.ActivateAnimation(State.walk, true);
 
-        // Ir al destino
-        agentAuthoring.SetDestination(target.position);
-        yield return new WaitForSeconds(2.25f);
-        momBehaviourScript.ActivateAnimation(State.walk, false);
+        // Define la duración del movimiento (ajusta según sea necesario)
+        float moveDuration = 2.25f;
+
+        // Mueve el transform hacia la posición destino usando DOMove
+        transform.DOMove(target.position, moveDuration).OnComplete(() =>
+        {
+            // Al completarse el movimiento, desactiva la animación de caminar
+            momBehaviourScript.ActivateAnimation(State.walk, false);
+        });
+
+        // Espera a que se complete el movimiento para finalizar la corrutina
+        yield return new WaitForSeconds(moveDuration);
     }
+
     
     public IEnumerator GoToNextSlot(Transform target)
     {

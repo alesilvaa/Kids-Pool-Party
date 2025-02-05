@@ -8,7 +8,7 @@ public class KidBehaviourScript : MonoBehaviour
     public SOKids kid;
     private string kidName;
     private bool isJumping = false;
-    private ObjectMover objectMover;
+    public ObjectMover objectMover;
    
     
     [SerializeField] private List<GameObject> _trailWater;
@@ -35,14 +35,28 @@ public class KidBehaviourScript : MonoBehaviour
         }
     }
     
-    public void DisableMovement()
+    public IEnumerator DisableMovement()
     {
+        Debug.Log("Kid: " + kidName + " is disabled");
+        yield return new WaitForSeconds(0.009f);
+        // Asegurar que no se siga ejecutando la interpolación
+        objectMover.StopAllCoroutines();
+
+        // Asegurar que no haya rotación residual
+        objectMover.tiltObject.transform.rotation = objectMover.originalRotation;
+
+        // Desactivar el script
         objectMover.enabled = false;
+
+        // Liberar cualquier objeto que esté "retenido"
+        objectMover.selectedObject = null;
+
         foreach (var trail in _trailWater)
         {
             trail.SetActive(false);
         }
     }
+
     
     
 }

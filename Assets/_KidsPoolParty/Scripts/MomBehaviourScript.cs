@@ -34,7 +34,7 @@ public class MomBehaviourScript : MonoBehaviour
             if (kid.kidNames == _name)
             {
                 Debug.Log("Mom: " + _name + " found her kid: " + kid.name);
-                kid.DisableMovement();
+                StartCoroutine(kid.DisableMovement());
                 StartCoroutine(kid.JumpToHerMom(hands.transform));
                 // Indicamos que ya encontró a su hijo y así se cumple la condición en el controlador.
                 _isReadyToGo = true;

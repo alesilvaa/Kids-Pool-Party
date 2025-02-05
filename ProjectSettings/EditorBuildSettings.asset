@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/_KidsPoolParty/_Scenes/Scene1.unity
+    guid: 51dbc0c1206744328aa55f9d988eb937
   m_configObjects: {}
