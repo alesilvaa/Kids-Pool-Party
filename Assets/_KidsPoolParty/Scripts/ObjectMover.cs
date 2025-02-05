@@ -94,7 +94,7 @@ public class ObjectMover : MonoBehaviour
                 rawTargetPosition.x = currentPosition.x;  // Mover solo en Z
             }
 
-            // Actualizamos el valor de lastMousePosition y aplicamos inclinación (tilt) si corresponde:
+            
             Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
             lastMousePosition = Input.mousePosition;
 
@@ -110,7 +110,7 @@ public class ObjectMover : MonoBehaviour
                 );
             }
 
-            // Calcular límites de la grilla y ajustar la posición destino:
+            
             Vector3 objSize = selectedObject.transform.localScale;
             float halfWidth = objSize.x / 2;
             float halfDepth = objSize.z / 2;
@@ -153,8 +153,7 @@ public class ObjectMover : MonoBehaviour
                     }
                 }
             }
-
-            // Actualizamos la posición final sin alterar la Y (se mantiene la altura actual)
+            
             selectedObject.transform.position = new Vector3(newPosition.x, currentPosition.y, newPosition.z);
         }
     }
@@ -187,8 +186,7 @@ public class ObjectMover : MonoBehaviour
             {
                 Debug.Log("No se puede colocar el objeto aquí.");
             }
-
-            // Se elimina la llamada a SmoothMoveToY para evitar la elevación en Y
+            
             selectedObject = null;
         }
     }
@@ -196,7 +194,7 @@ public class ObjectMover : MonoBehaviour
     private IEnumerator SmoothRotateToOriginal()
     {
         float elapsedTime = 0f;
-        float duration = 0.3f; // Duración de la animación de retorno
+        float duration = 0.3f; 
         Quaternion startRotation = tiltObject.transform.rotation;
 
         while (elapsedTime < duration)
@@ -220,7 +218,7 @@ public class ObjectMover : MonoBehaviour
         // Hacemos un BoxCast para verificar todo el camino
         RaycastHit[] hits = Physics.BoxCastAll(
             start,
-            halfExtents * 0.9f, // Reducimos ligeramente el tamaño para evitar falsos positivos
+            halfExtents * 0.9f, 
             direction.normalized,
             Quaternion.identity,
             distance,
@@ -308,6 +306,5 @@ public class ObjectMover : MonoBehaviour
         float centerZ = (gridPos.x + (float)height / 2) * gridManager.cellSize;
         return new Vector3(centerX, 0, centerZ);
     }
-
-    // Se eliminó el método SmoothMoveToY ya que no es necesario
+    
 }

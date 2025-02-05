@@ -59,6 +59,11 @@ public class MomBehaviourScript : MonoBehaviour
     {
         yield return StartCoroutine(agentmovement.GotoExit(target,timeDelay ,isRotate));
     }
+    
+    public IEnumerator MoveToNexSlot(Transform target)
+    {
+        yield return StartCoroutine(agentmovement.GoToNextSlot(target));
+    }
 
     // Propiedad para que MomController pueda leer el estado de _isHaveKid.
     public bool IsHaveKid

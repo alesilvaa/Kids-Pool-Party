@@ -4,47 +4,76 @@ using UnityEngine;
 
 public class MomController : MonoBehaviour
 {
+    [Header("Posiciones")]
     [SerializeField] private Transform startPosition;
     [SerializeField] private Transform endPosition;
+    
+    [Header("Configuración de Moms y Slots")]
     [SerializeField] private List<MomBehaviourScript> moms;
+    [SerializeField] private Transform prefabSlotQueue;
+    [SerializeField] private float slotSpacing = 1.0f; // Distancia entre cada slot en Z
+
+    // Lista para almacenar los slots instanciados
+    private List<Transform> slots = new List<Transform>();
 
     private void Start()
     {
-        // Desactivar todas las moms al inicio.
-        foreach (var mom in moms)
+       
+
+        // Instanciar los slots para la cantidad de moms, colocándolos uno detrás de otro en Z.
+        for (int i = 0; i < moms.Count; i++)
         {
-            mom.gameObject.SetActive(false);
+            // La posición de cada slot se calcula a partir de startPosition, avanzando en Z.
+            Vector3 slotPos = startPosition.position + new Vector3(0, 0, i * slotSpacing);
+            Transform slotInstance = Instantiate(prefabSlotQueue, slotPos, Quaternion.identity, transform);
+            slots.Add(slotInstance);
         }
-        // Inicia el proceso secuencial
+
+        // Ubicar a cada mamá en su slot correspondiente.
+        for (int i = 0; i < moms.Count; i++)
+        {
+            moms[i].transform.position = slots[i].position;
+        }
+
+        // Inicia el proceso secuencial de las moms.
         StartCoroutine(ProcessMoms());
     }
 
     private IEnumerator ProcessMoms()
     {
-        foreach (var mom in moms)
+        // Mientras queden moms en la cola.
+        while (moms.Count > 0)
         {
-            // Activar la mom actual.
-            mom.gameObject.SetActive(true);
-
-            // Mover a la posición de inicio.
-            yield return StartCoroutine(mom.MoveTo(startPosition,0.1f));
-
-            // Esperar a que la mamá obtenga a su hijo (_isHaveKid se ponga en true).
-            yield return new WaitUntil(() => mom.IsHaveKid);
+            // La primera mamá en la lista es la que se procesa.
+            MomBehaviourScript currentMom = moms[0];
+            yield return new WaitUntil(() => currentMom.IsHaveKid);
             yield return new WaitForSeconds(0.4f);
 
             // Una vez que ya tiene a su hijo, moverla a la posición final.
-            yield return StartCoroutine(mom.MoveTo(endPosition,1, false));
+            yield return StartCoroutine(currentMom.MoveTo(endPosition, 1, false));
+            // Lanza la corrutina para desactivarla con un pequeño retardo.
+            StartCoroutine(DelayToDisableMom(currentMom));
+
+            // Remover la mamá que ya completó su proceso.
+            moms.RemoveAt(0);
+
             
-            StartCoroutine(DelayToDisableMom(mom));
-            
-            
+
+            // Mover cada mamá restante al slot correspondiente (cada una avanza al siguiente slot).
+            for (int i = 0; i < moms.Count; i++)
+            {
+                // Se asume que el slot i de la lista slots corresponde a la posición destino.
+                StartCoroutine(moms[i].MoveToNexSlot(slots[i].transform));
+            }
+
+            // Opcional: esperar un momento antes de procesar la siguiente mamá.
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
     private IEnumerator DelayToDisableMom(MomBehaviourScript mom)
     {
-        yield return new WaitForSeconds(4f); // Espera 2 segundos en la posición final
+        yield return new WaitForSeconds(4f); // Espera 4 segundos en la posición final
         mom.gameObject.SetActive(false);
     }
 }

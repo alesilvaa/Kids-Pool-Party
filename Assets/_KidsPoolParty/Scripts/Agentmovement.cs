@@ -40,7 +40,7 @@ public class Agentmovement : MonoBehaviour
             Quaternion finalRotation = momFBX.transform.rotation * Quaternion.Euler(0, 180, 0);
 
             // Rotar suavemente durante 1 segundo (ajusta la duración según necesites)
-            yield return StartCoroutine(RotateSmooth(momFBX.transform, finalRotation, 0.45f));
+            yield return StartCoroutine(RotateSmooth(momFBX.transform, finalRotation, 0.15f));
         }
 
         
@@ -52,6 +52,15 @@ public class Agentmovement : MonoBehaviour
         agentAuthoring.SetDestination(target.position);
         yield return new WaitForSeconds(2.25f);
         momBehaviourScript.ActivateAnimation(State.walk, false);
+    }
+    
+    public IEnumerator GoToNextSlot(Transform target)
+    {
+        momBehaviourScript.ActivateAnimation(State.walk, true);
+        agentAuthoring.SetDestination(target.position);
+        yield return new WaitForSeconds(0.3f);
+        momBehaviourScript.ActivateAnimation(State.walk, false);
+        
     }
     
 }
