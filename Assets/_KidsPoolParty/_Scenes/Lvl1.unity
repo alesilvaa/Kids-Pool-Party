@@ -2191,10 +2191,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIManager (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 3516334250744943476, guid: d5efe13e1fec040c8b35aeb6b514b87b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5615009233692638420, guid: d5efe13e1fec040c8b35aeb6b514b87b, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -2273,10 +2269,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5615009233692638420, guid: d5efe13e1fec040c8b35aeb6b514b87b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7455575600167141287, guid: d5efe13e1fec040c8b35aeb6b514b87b, type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8314401159309745425, guid: d5efe13e1fec040c8b35aeb6b514b87b, type: 3}

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
+using UnityEngine.Serialization;
 
 public class UiManager : MonoBehaviour
 {
@@ -11,8 +12,11 @@ public class UiManager : MonoBehaviour
     [SerializeField] private GameObject _losePanel;
     [SerializeField]private GameObject navBar;
     [SerializeField] private GameObject _btnNextLevel;
-    [SerializeField] private Image _icon;
+    [SerializeField] private GameObject _btnRestartLevel;
+    [SerializeField] private Image _iconWIN;
+    [SerializeField] private Image _iconLOSE; 
     [SerializeField] private TextMeshProUGUI _textWin;
+    [SerializeField] private TextMeshProUGUI _textLose;
     
 
     private void Start()
@@ -41,6 +45,7 @@ public class UiManager : MonoBehaviour
     public void ShowLosePanel()
     {
         _losePanel.SetActive(true);
+        AnimateLosePanel();
         HideNavBar();
     }
     
@@ -83,11 +88,11 @@ public class UiManager : MonoBehaviour
         // Inicializamos el scale de cada elemento a 0 para iniciar la animación
         _textWin.transform.localScale = Vector3.zero;
         _btnNextLevel.transform.localScale = Vector3.zero;
-        _icon.transform.localScale = Vector3.zero;
+        _iconWIN.transform.localScale = Vector3.zero;
 
         // Se animan con un DOScale hasta llegar a 1
         _textWin.transform.DOScale(1f, 0.5f).SetEase(Ease.InOutSine);
-        _icon.transform.DOScale(1f, 0.5f).SetEase(Ease.InOutSine).SetDelay(0.4f);
+        _iconWIN.transform.DOScale(1f, 0.5f).SetEase(Ease.InOutSine).SetDelay(0.4f);
 
         // Para el botón, animamos primero la aparición y luego aplicamos un efecto bounce infinito
         _btnNextLevel.transform
@@ -102,4 +107,30 @@ public class UiManager : MonoBehaviour
                     .SetLoops(-1, LoopType.Yoyo);
             });
     }
+    
+    private void AnimateLosePanel()
+    {
+        // Inicializamos el scale de cada elemento a 0 para iniciar la animación
+        _textLose.transform.localScale = Vector3.zero;
+        _btnRestartLevel.transform.localScale = Vector3.zero;
+        _iconLOSE.transform.localScale = Vector3.zero;
+
+        // Se animan con un DOScale hasta llegar a 1
+        _textLose.transform.DOScale(1f, 0.5f).SetEase(Ease.InOutSine);
+        _iconLOSE.transform.DOScale(1f, 0.5f).SetEase(Ease.InOutSine).SetDelay(0.4f);
+
+        // Para el botón, animamos primero la aparición y luego aplicamos un efecto bounce infinito
+        _btnRestartLevel.transform
+            .DOScale(1f, 0.5f)
+            .SetEase(Ease.InOutSine)
+            .SetDelay(0.2f)
+            .OnComplete(() => {
+                // Efecto bounce: escala ligeramente superior y vuelve, en loop infinito
+                _btnRestartLevel.transform
+                    .DOScale(1.2f, 0.5f)
+                    .SetEase(Ease.InOutSine)
+                    .SetLoops(-1, LoopType.Yoyo);
+            });
+    }
+    
 }
