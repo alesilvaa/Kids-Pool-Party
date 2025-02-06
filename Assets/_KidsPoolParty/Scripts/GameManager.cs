@@ -9,8 +9,6 @@ public class GameManager : MonoBehaviour
     
     private void Awake()
     {
-        //Application.targetFrameRate = 60; // Fijar la tasa de refresco a 60 FPS
-        
         // Implementar el patrón Singleton
         if (Instance == null)
         {
@@ -25,6 +23,17 @@ public class GameManager : MonoBehaviour
     
     public void NextLevel()
     {
-        SceneManager.LoadScene(0);
+        // Obtiene el índice de la escena actual y le suma 1
+        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        
+        // Verifica si el índice de la siguiente escena es mayor o igual que la cantidad total de escenas
+        if (nextSceneIndex >= SceneManager.sceneCountInBuildSettings)
+        {
+            // Si no hay más escenas, vuelve a la primera escena (índice 0)
+            nextSceneIndex = 0;
+        }
+        
+        // Carga la siguiente escena
+        SceneManager.LoadScene(nextSceneIndex);
     }
 }

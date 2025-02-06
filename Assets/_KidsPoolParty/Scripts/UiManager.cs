@@ -8,9 +8,12 @@ using TMPro;
 public class UiManager : MonoBehaviour
 {
     [SerializeField] private GameObject _winPanel;
+    [SerializeField] private GameObject _losePanel;
+    [SerializeField]private GameObject navBar;
     [SerializeField] private GameObject _btnNextLevel;
     [SerializeField] private Image _icon;
     [SerializeField] private TextMeshProUGUI _textWin;
+    
 
     private void Start()
     {

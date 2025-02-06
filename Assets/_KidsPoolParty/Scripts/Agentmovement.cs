@@ -10,6 +10,7 @@ public class Agentmovement : MonoBehaviour
     [SerializeField] private GameObject momFBX;
     [SerializeField] private AgentAuthoring agentAuthoring;
     [SerializeField] private AgentAstarPathingAuthoring agentAstarPathingAuthoring;
+    [SerializeField] private int degreeOfRotation;
     private bool once;
     private MomBehaviourScript momBehaviourScript;
 
@@ -40,9 +41,9 @@ public class Agentmovement : MonoBehaviour
         if (isRotate)
         {
             // Calcula la rotación final (180° sobre el eje Y)
-            Quaternion finalRotation = momFBX.transform.rotation * Quaternion.Euler(0, 120, 0);
+            Quaternion finalRotation = momFBX.transform.rotation * Quaternion.Euler(0, degreeOfRotation, 0);
             // Rota suavemente durante 0.19 segundos (ajusta la duración si es necesario)
-            yield return StartCoroutine(RotateSmooth(momFBX.transform, finalRotation, 0.19f));
+            StartCoroutine(RotateSmooth(momFBX.transform, finalRotation, 0.19f));
         }
 
         // Activa la animación de caminar

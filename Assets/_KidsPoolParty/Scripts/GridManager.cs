@@ -10,7 +10,7 @@ public class GridManager : MonoBehaviour
 
     void Start()
     {
-        InitializeGrid();
+        //InitializeGrid();
         grid = new bool[rows, cols];
     }
 

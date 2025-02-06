@@ -13,6 +13,9 @@ public class MomController : MonoBehaviour
     [SerializeField] private Transform prefabSlotQueue;
     [SerializeField] private float slotSpacing = 1.0f; // Distancia entre cada slot en Z
 
+    // Nuevo booleano para definir la dirección en Z
+    [SerializeField] private bool instanciarEnZPositivo = true;
+
     // Lista para almacenar los slots instanciados
     private List<Transform> slots = new List<Transform>();
 
@@ -21,8 +24,9 @@ public class MomController : MonoBehaviour
         // Instanciar los slots para la cantidad de moms, colocándolos uno detrás de otro en Z.
         for (int i = 0; i < moms.Count; i++)
         {
-            // La posición de cada slot se calcula a partir de startPosition, avanzando en Z.
-            Vector3 slotPos = startPosition.position + new Vector3(0, 0, i * slotSpacing);
+            // Dependiendo del booleano, se instancian en Z positivo o negativo.
+            float direccion = instanciarEnZPositivo ? 1f : -1f;
+            Vector3 slotPos = startPosition.position + new Vector3(0, 0, i * slotSpacing * direccion);
             Transform slotInstance = Instantiate(prefabSlotQueue, slotPos, Quaternion.identity, transform);
             slots.Add(slotInstance);
         }
@@ -45,14 +49,13 @@ public class MomController : MonoBehaviour
             // La primera mamá en la lista es la que se procesa.
             MomBehaviourScript currentMom = moms[0];
             yield return new WaitUntil(() => currentMom.IsHaveKid);
-            yield return new WaitForSeconds(0.2f);
 
             // Una vez que ya tiene a su hijo, moverla a la posición final.
             StartCoroutine(currentMom.MoveTo(endPosition, .5f, true));
             currentMom.GetComponent<BoxCollider>().enabled = false;
             StartCoroutine(DelayToDisableMom(currentMom));
             moms.RemoveAt(0);
-            yield return new WaitForSeconds(.8f);
+            yield return new WaitForSeconds(.5f);
             
             // Mover cada mamá restante al slot correspondiente (cada una avanza al siguiente slot).
             for (int i = 0; i < moms.Count; i++)
@@ -71,7 +74,7 @@ public class MomController : MonoBehaviour
 
     private IEnumerator DelayToDisableMom(MomBehaviourScript mom)
     {
-        yield return new WaitForSeconds(3f); // Espera 4 segundos en la posición final
+        yield return new WaitForSeconds(3f); // Espera 3 segundos en la posición final
         mom.gameObject.SetActive(false);
     }
 }
