@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System; // Necesario para el uso de eventos
 
 public class MomController : MonoBehaviour
 {
+    private bool noMoreMoms = false;
     [Header("Posiciones")]
     [SerializeField] private Transform startPosition;
     [SerializeField] private Transform endPosition;
@@ -19,12 +21,17 @@ public class MomController : MonoBehaviour
     // Lista para almacenar los slots instanciados
     private List<Transform> slots = new List<Transform>();
 
+    // Propiedad para acceder a noMoreMoms si se necesita desde fuera
+    public bool noMoreMomsActive => noMoreMoms;
+
+    // Evento que se disparará cuando este MomController termine su proceso.
+    public event Action OnMomFinished;
+
     private void Start()
     {
         // Instanciar los slots para la cantidad de moms, colocándolos uno detrás de otro en Z.
         for (int i = 0; i < moms.Count; i++)
         {
-            // Dependiendo del booleano, se instancian en Z positivo o negativo.
             float direccion = instanciarEnZPositivo ? 1f : -1f;
             Vector3 slotPos = startPosition.position + new Vector3(0, 0, i * slotSpacing * direccion);
             Transform slotInstance = Instantiate(prefabSlotQueue, slotPos, Quaternion.identity, transform);
@@ -60,16 +67,14 @@ public class MomController : MonoBehaviour
             // Mover cada mamá restante al slot correspondiente (cada una avanza al siguiente slot).
             for (int i = 0; i < moms.Count; i++)
             {
-                // Se asume que el slot i de la lista slots corresponde a la posición destino.
                 StartCoroutine(moms[i].MoveToNexSlot(slots[i].transform));
             }
-            // Opcional: esperar un momento antes de procesar la siguiente mamá.
             yield return new WaitForSeconds(0.5f);
         }
         
-        // Cuando ya no quedan madres, se llama a la función OnWinPanel.
-        EventsManager.Instance.WinPanel();
-        SoundManager.Instance.PlayWinSound();
+        // Marca que este controlador ha terminado y dispara el evento.
+        noMoreMoms = true;
+        OnMomFinished?.Invoke();
     }
 
     private IEnumerator DelayToDisableMom(MomBehaviourScript mom)

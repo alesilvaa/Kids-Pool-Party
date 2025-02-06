@@ -17,19 +17,31 @@ public class UiManager : MonoBehaviour
 
     private void Start()
     {
+        ShowNavBar();
         HideWinPanel();
+        HideLosePanel();
         EventsManager.Instance.OnWinPanel += ShowWinPanel;
+        EventsManager.Instance.OnLosePanel += ShowLosePanel;
     }
 
     private void OnDestroy()
     {
         EventsManager.Instance.OnWinPanel -= ShowWinPanel;
+        EventsManager.Instance.OnLosePanel -= ShowLosePanel;
     }
 
     public void ShowWinPanel()
     {
         _winPanel.SetActive(true);
         AnimateWinPanel();
+        HideNavBar();
+        
+    }
+    
+    public void ShowLosePanel()
+    {
+        _losePanel.SetActive(true);
+        HideNavBar();
     }
     
     public void HideWinPanel()
@@ -37,11 +49,32 @@ public class UiManager : MonoBehaviour
         _winPanel.SetActive(false);
     }
     
+    public void HideLosePanel()
+    {
+        _losePanel.SetActive(false);
+    }
+    
     public void NextLevel()
     {
         SoundManager.Instance.PlayClickSound();
         GameManager.Instance.NextLevel();
         HideWinPanel();
+    }
+    
+    public void RestartLevel()
+    {
+        SoundManager.Instance.PlayClickSound();
+        GameManager.Instance.RestartLevel();
+        HideLosePanel();
+    }
+    private void ShowNavBar()
+    {
+        navBar.SetActive(true);
+    }
+    
+    private void HideNavBar()
+    {
+        navBar.SetActive(false);
     }
 
     // Función que anima de forma "juicy" los elementos del panel

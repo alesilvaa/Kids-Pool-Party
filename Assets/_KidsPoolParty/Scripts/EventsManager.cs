@@ -36,9 +36,15 @@ public class EventsManager : MonoBehaviour
     
     
     public event Action OnWinPanel;
+    public event Action OnLosePanel;
     
     public void WinPanel()
     {
         OnWinPanel?.Invoke();
+    }
+    
+    public void LosePanel()
+    {
+        OnLosePanel?.Invoke();
     }
 }

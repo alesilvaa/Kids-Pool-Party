@@ -6,7 +6,7 @@ public class TimerUi : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _timerText;
 
     // Tiempo en segundos (2 minutos = 120 segundos)
-    private float timeRemaining = 120f;
+    private float timeRemaining = 20f;
     private bool timerIsRunning = false;
 
     private void Start()
@@ -40,6 +40,7 @@ public class TimerUi : MonoBehaviour
                 // Cuando el tiempo se ha agotado, detenemos el temporizador
                 timerIsRunning = false;
                 Debug.Log("¡El tiempo se ha agotado!");
+                EventsManager.Instance.LosePanel();
             }
         }
     }
