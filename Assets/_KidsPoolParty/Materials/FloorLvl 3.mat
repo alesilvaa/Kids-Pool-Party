@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FloorLvl2
+  m_Name: FloorLvl 3
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 2100000, guid: 0cf431237e32b47cfacbd82a54f7a73b, type: 2}
   m_ModifiedSerializedProperties: 2
@@ -39,17 +39,17 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: dbfc8eb93c5974807901ac83cc52b189, type: 3}
-        m_Scale: {x: 15, y: 13}
+        m_Texture: {fileID: 2800000, guid: fb0db789348374d56ac45688c1eb4d3f, type: 3}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: dbfc8eb93c5974807901ac83cc52b189, type: 3}
-        m_Scale: {x: 15, y: 13}
+        m_Texture: {fileID: 2800000, guid: fb0db789348374d56ac45688c1eb4d3f, type: 3}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats: []
     m_Colors:
-    - _BaseColor: {r: 0.3502358, g: 1, b: 0.3160377, a: 1}
-    - _Color: {r: 0.35023573, g: 1, b: 0.31603768, a: 1}
-    - _EmissionColor: {r: 0.06251392, g: 0.1792453, b: 0.060030267, a: 1}
+    - _BaseColor: {r: 0.9433962, g: 0.6719473, b: 0.81044173, a: 1}
+    - _Color: {r: 0.9433962, g: 0.6719473, b: 0.81044173, a: 1}
+    - _EmissionColor: {r: 0.09884821, g: 0.027367385, b: 0.14150941, a: 1}
   m_BuildTextureStacks: []

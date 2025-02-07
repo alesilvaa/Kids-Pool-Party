@@ -7,6 +7,18 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     
+    private bool isWin = false;
+    private bool isLose = false;
+
+    public bool isWinPlayer => isWin;
+    public bool isLosePlayer => isLose;
+
+    private void Start()
+    {
+        EventsManager.Instance.OnWinPanel += () => isWin = true;
+        EventsManager.Instance.OnLosePanel += () => isLose = true;
+    }
+    
     private void Awake()
     {
         // Implementar el patrón Singleton

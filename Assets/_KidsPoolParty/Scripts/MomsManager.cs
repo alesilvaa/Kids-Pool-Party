@@ -30,8 +30,11 @@ public class MomsManager : MonoBehaviour
 
     private void NoMoreMoms()
     {
-        // Cuando ya no quedan madres, se llama a la función OnWinPanel y se reproduce el sonido de victoria.
-        EventsManager.Instance.WinPanel();
-        SoundManager.Instance.PlayWinSound();
+        if (!GameManager.Instance.isLosePlayer)
+        {
+            // Cuando ya no quedan madres, se llama a la función OnWinPanel y se reproduce el sonido de victoria.
+            EventsManager.Instance.WinPanel();
+            SoundManager.Instance.PlayWinSound();
+        }
     }
 }
