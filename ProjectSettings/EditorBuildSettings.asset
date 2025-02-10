@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_KidsPoolParty/_Scenes/Lvl 3.unity
     guid: bf620b68e32934762a4f55d8ade857ab
+  - enabled: 1
+    path: Assets/_KidsPoolParty/_Scenes/Lvl 4.unity
+    guid: 3eb04f54eda6a47fc82fa72c878dd72b
   m_configObjects: {}

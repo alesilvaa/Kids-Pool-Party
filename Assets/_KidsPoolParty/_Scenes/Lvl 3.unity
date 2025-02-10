@@ -1407,7 +1407,8 @@ MonoBehaviour:
   - {fileID: 1360426895}
   prefabSlotQueue: {fileID: 2969848159307981003, guid: 8c40d1a0fcbfc4a878451e65414d338a, type: 3}
   slotSpacing: 1.2
-  instanciarEnZPositivo: 1
+  usarEjeX: 0
+  instanciarEnPositivo: 1
 --- !u!1001 &301172376
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1615,7 +1616,8 @@ MonoBehaviour:
   - {fileID: 746786035}
   prefabSlotQueue: {fileID: 2969848159307981003, guid: 8c40d1a0fcbfc4a878451e65414d338a, type: 3}
   slotSpacing: 1.2
-  instanciarEnZPositivo: 0
+  usarEjeX: 0
+  instanciarEnPositivo: 1
 --- !u!4 &356176202
 Transform:
   m_ObjectHideFlags: 0
@@ -3001,7 +3003,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 12
+  orthographic size: 13
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -10739,7 +10741,8 @@ MonoBehaviour:
   - {fileID: 1308740162}
   prefabSlotQueue: {fileID: 2969848159307981003, guid: 8c40d1a0fcbfc4a878451e65414d338a, type: 3}
   slotSpacing: 1.2
-  instanciarEnZPositivo: 1
+  usarEjeX: 0
+  instanciarEnPositivo: 1
 --- !u!1 &1391187423
 GameObject:
   m_ObjectHideFlags: 0
@@ -22290,7 +22293,8 @@ MonoBehaviour:
   - {fileID: 1455926523}
   prefabSlotQueue: {fileID: 2969848159307981003, guid: 8c40d1a0fcbfc4a878451e65414d338a, type: 3}
   slotSpacing: 1.2
-  instanciarEnZPositivo: 0
+  usarEjeX: 0
+  instanciarEnPositivo: 1
 --- !u!1001 &1945612874
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24699,13 +24703,13 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   colorGradientTexture: {fileID: 0}
-  shallowColor: {r: 0.015574937, g: 0.34709722, b: 0.6603774, a: 0.77254903}
-  deepColor: {r: 0.18605831, g: 0.61952436, b: 0.8396226, a: 0.65882355}
+  shallowColor: {r: 0.015574937, g: 0.34709623, b: 0.6603774, a: 0.77254903}
+  deepColor: {r: 0.18605736, g: 0.61952436, b: 0.8396226, a: 0.65882355}
   colorDepth: 2.59
-  horizonColor: {r: 0.18623632, g: 0.33957532, b: 0.745283, a: 1}
+  horizonColor: {r: 0.18623537, g: 0.33957434, b: 0.745283, a: 1}
   horizonDistance: 20
   shoreFade: 0
-  shoreColor: {r: 0, g: 0.98039216, b: 0.30185995, a: 0}
+  shoreColor: {r: 0, g: 0.98039216, b: 0.30185893, a: 0}
   shoreStrength: 0
   shoreBlend: 0
   shoreDepth: 0

@@ -1294,20 +1294,21 @@ MonoBehaviour:
   endPosition: {fileID: 473595667}
   moms:
   - {fileID: 900233549}
-  - {fileID: 3834113887492706810}
-  - {fileID: 588371797076458875}
-  - {fileID: 3058319838050571954}
   - {fileID: 734393366}
-  - {fileID: 505935044}
-  - {fileID: 1363048825}
-  - {fileID: 1035496621}
-  - {fileID: 170644850}
   - {fileID: 2072918200}
+  - {fileID: 3834113887492706810}
+  - {fileID: 505935044}
   - {fileID: 2068166668}
+  - {fileID: 588371797076458875}
+  - {fileID: 170644850}
+  - {fileID: 1363048825}
+  - {fileID: 3058319838050571954}
+  - {fileID: 1035496621}
   - {fileID: 2112007805}
   prefabSlotQueue: {fileID: 2969848159307981003, guid: 8c40d1a0fcbfc4a878451e65414d338a, type: 3}
   slotSpacing: 1.2
-  instanciarEnZPositivo: 1
+  usarEjeX: 0
+  instanciarEnPositivo: 1
 --- !u!1001 &301172376
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1596,6 +1597,10 @@ PrefabInstance:
     - target: {fileID: 4340850282333859904, guid: c17cc213a8a2010499538d6b007166f7, type: 3}
       propertyPath: m_Name
       value: Ball
+      objectReference: {fileID: 0}
+    - target: {fileID: 4340850282333859904, guid: c17cc213a8a2010499538d6b007166f7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2095,7 +2100,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5997943237856827951, guid: 56e474ff9b3895944b79290e28762573, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.04
+      value: 1.51
       objectReference: {fileID: 0}
     - target: {fileID: 5997943237856827951, guid: 56e474ff9b3895944b79290e28762573, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2495,7 +2500,7 @@ Camera:
   far clip plane: 9000
   field of view: 60
   orthographic: 1
-  orthographic size: 12
+  orthographic size: 12.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -18850,6 +18855,10 @@ PrefabInstance:
     - target: {fileID: 2847210312000589566, guid: a14c6e2e1c7ae344aac481ddd02c283f, type: 3}
       propertyPath: m_Name
       value: Beach_Toy_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2847210312000589566, guid: a14c6e2e1c7ae344aac481ddd02c283f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3226972194432062532, guid: a14c6e2e1c7ae344aac481ddd02c283f, type: 3}
       propertyPath: m_LocalScale.x
