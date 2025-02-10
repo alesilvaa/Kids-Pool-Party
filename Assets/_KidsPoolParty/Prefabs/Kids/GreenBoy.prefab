@@ -51,8 +51,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridManager: {fileID: 0}
+  tiltObject: {fileID: 0}
   maxTiltAngle: 90
   tiltSpeed: 5
+  selectedObject: {fileID: 0}
+  originalRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!65 &5341066881813403443
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -114,6 +117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   kid: {fileID: 11400000, guid: 3f3d0c11f1f494532a2b2bde0ed40e9d, type: 2}
+  objectMover: {fileID: 0}
   _trailWater:
   - {fileID: 4274900488873719510}
   - {fileID: 283997363236734486}
@@ -259,7 +263,7 @@ PrefabInstance:
     - target: {fileID: 968061391597634357, guid: 72664a866e6cc4c1ea8cc18361e8521d, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: f8d9e121113eb4bea842b9ba195df844, type: 2}
+      objectReference: {fileID: 2100000, guid: eed6a1b2b0f1940508ce7d6eb29b8ed8, type: 2}
     - target: {fileID: 5866666021909216657, guid: 72664a866e6cc4c1ea8cc18361e8521d, type: 3}
       propertyPath: m_Controller
       value: 

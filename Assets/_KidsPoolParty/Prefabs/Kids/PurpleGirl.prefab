@@ -20718,7 +20718,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 48d960771072b4ced8c01d5cbbd75b37, type: 2}
+  - {fileID: 2100000, guid: abc2897daf0cf42328bd502e49feb992, type: 2}
   - {fileID: 2100000, guid: 2833e3f0e630a4e6299933984b8505de, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -21070,8 +21070,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridManager: {fileID: 0}
+  tiltObject: {fileID: 0}
   maxTiltAngle: 90
   tiltSpeed: 5
+  selectedObject: {fileID: 0}
+  originalRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!65 &1739292038858651756
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -21133,6 +21136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   kid: {fileID: 11400000, guid: b201896012a4649a98f35d2714408a37, type: 2}
+  objectMover: {fileID: 0}
   _trailWater:
   - {fileID: 492601681380974502}
   - {fileID: 4544614669994539289}

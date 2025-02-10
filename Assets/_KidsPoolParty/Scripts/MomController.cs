@@ -6,6 +6,7 @@ using System; // Necesario para el uso de eventos
 public class MomController : MonoBehaviour
 {
     private bool noMoreMoms = false;
+
     [Header("Posiciones")]
     [SerializeField] private Transform startPosition;
     [SerializeField] private Transform endPosition;
@@ -13,10 +14,11 @@ public class MomController : MonoBehaviour
     [Header("Configuración de Moms y Slots")]
     [SerializeField] private List<MomBehaviourScript> moms;
     [SerializeField] private Transform prefabSlotQueue;
-    [SerializeField] private float slotSpacing = 1.0f; // Distancia entre cada slot en Z
+    [SerializeField] private float slotSpacing = 1.0f; // Distancia entre cada slot
 
-    // Nuevo booleano para definir la dirección en Z
-    [SerializeField] private bool instanciarEnZPositivo = true;
+    [Header("Configuración de Instanciación")]
+    [SerializeField] private bool usarEjeX = false; // Si es true se instanciará en el eje X; de lo contrario, en el eje Z.
+    [SerializeField] private bool instanciarEnPositivo = true; // Si es true se instanciará en dirección positiva, si no, en negativa.
 
     // Lista para almacenar los slots instanciados
     private List<Transform> slots = new List<Transform>();
@@ -29,11 +31,15 @@ public class MomController : MonoBehaviour
 
     private void Start()
     {
-        // Instanciar los slots para la cantidad de moms, colocándolos uno detrás de otro en Z.
+        // Instanciar los slots para la cantidad de moms, colocándolos uno detrás de otro en el eje seleccionado.
         for (int i = 0; i < moms.Count; i++)
         {
-            float direccion = instanciarEnZPositivo ? 1f : -1f;
-            Vector3 slotPos = startPosition.position + new Vector3(0, 0, i * slotSpacing * direccion);
+            float direccion = instanciarEnPositivo ? 1f : -1f;
+            Vector3 offset = usarEjeX 
+                ? new Vector3(i * slotSpacing * direccion, 0, 0) 
+                : new Vector3(0, 0, i * slotSpacing * direccion);
+            Vector3 slotPos = startPosition.position + offset;
+
             Transform slotInstance = Instantiate(prefabSlotQueue, slotPos, Quaternion.identity, transform);
             slots.Add(slotInstance);
         }
