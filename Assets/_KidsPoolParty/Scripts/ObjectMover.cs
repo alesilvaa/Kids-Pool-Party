@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectMover : MonoBehaviour
@@ -14,27 +13,29 @@ public class ObjectMover : MonoBehaviour
     private Plane dragPlane;
     private Vector3 lastMousePosition;
     public Quaternion originalRotation;
-    
-    
-    
-    
-    
+
     // Bandera para evitar reproducir el sonido varias veces por arrastre
     private bool hasPlayedWaterSound = false;
 
+    // Referencia cacheada a la cámara principal
+    private Camera mainCamera;
+
+    // Array preasignado para evitar asignaciones en Physics.BoxCast
+    private RaycastHit[] boxCastResults = new RaycastHit[10];
+
     private void Start()
     {
-        // Asigna este objeto para el tilt
+        mainCamera = Camera.main;
         tiltObject = this.gameObject;
         if (tiltObject != null)
         {
             originalRotation = tiltObject.transform.rotation;
         }
     }
-    
+
     void Update()
     {
-        if (!enabled) return; // Evita cualquier ejecución si el script está deshabilitado
+        if (!enabled) return;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -50,10 +51,9 @@ public class ObjectMover : MonoBehaviour
         }
     }
 
-
     void OnMouseDown()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             if (hit.collider.CompareTag("Movable"))
@@ -71,7 +71,6 @@ public class ObjectMover : MonoBehaviour
                     originalRotation = tiltObject.transform.rotation;
                 }
                 
-                // Reiniciamos la bandera al iniciar el arrastre
                 hasPlayedWaterSound = false;
                 ClearOccupiedCells(selectedObject);
             }
@@ -83,15 +82,15 @@ public class ObjectMover : MonoBehaviour
         if (selectedObject != this.gameObject)
             return;
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         if (dragPlane.Raycast(ray, out float distance))
         {
-            // Calculamos la posición destino sin restricciones
+            // Posición destino sin restricciones
             Vector3 rawTargetPosition = ray.GetPoint(distance) + offset;
             Vector3 currentPosition = selectedObject.transform.position;
             Vector3 delta = rawTargetPosition - currentPosition;
             
-            // Se mueve solo en X o en Z, según cuál sea mayor
+            // Mover solo en X o en Z, según cuál sea mayor
             if (Mathf.Abs(delta.x) > Mathf.Abs(delta.z))
             {
                 rawTargetPosition.z = currentPosition.z;  // Solo X
@@ -116,7 +115,7 @@ public class ObjectMover : MonoBehaviour
                 );
             }
 
-            // Restricciones para mantener el objeto dentro del grid
+            // Restringe el movimiento para mantener el objeto dentro del grid
             Vector3 objSize = selectedObject.transform.localScale;
             float halfWidth = objSize.x / 2;
             float halfDepth = objSize.z / 2;
@@ -132,14 +131,13 @@ public class ObjectMover : MonoBehaviour
             Vector3 smoothedPosition = Vector3.Lerp(currentPosition, rawTargetPosition, Time.deltaTime * moveSpeed);
             Vector3 movement = smoothedPosition - currentPosition;
             
-            // Si hay movimiento significativo y no se ha reproducido el sonido aún, lo reproducimos
             if ((Mathf.Abs(movement.x) > 0.01f || Mathf.Abs(movement.z) > 0.01f) && !hasPlayedWaterSound)
             {
                 SoundManager.Instance.PlayWaterSound();
                 hasPlayedWaterSound = true;
             }
             
-            // Verificar colisiones a lo largo del camino
+            // Comprobación de colisiones usando BoxCastNonAlloc para evitar GC
             bool pathBlocked = CheckPathBlocked(currentPosition, smoothedPosition, objSize / 2);
             Vector3 newPosition = currentPosition;
 
@@ -175,7 +173,6 @@ public class ObjectMover : MonoBehaviour
     {
         if (selectedObject != null)
         {
-            // Restaurar la rotación original suavemente
             if (tiltObject != null)
             {
                 StartCoroutine(SmoothRotateToOriginal());
@@ -200,7 +197,6 @@ public class ObjectMover : MonoBehaviour
             }
             
             selectedObject = null;
-            // Reiniciamos la bandera para el siguiente arrastre
             hasPlayedWaterSound = false;
         }
     }
@@ -229,18 +225,19 @@ public class ObjectMover : MonoBehaviour
         if (distance < 0.01f)
             return false;
 
-        RaycastHit[] hits = Physics.BoxCastAll(
+        int hitCount = Physics.BoxCastNonAlloc(
             start,
             halfExtents * 0.9f,
             direction.normalized,
+            boxCastResults,
             Quaternion.identity,
             distance,
-            ~LayerMask.GetMask("Ignore Raycast") // Ignorar la capa "Ignore Raycast"
+            ~LayerMask.GetMask("Ignore Raycast")
         );
 
-        foreach (var hit in hits)
+        for (int i = 0; i < hitCount; i++)
         {
-            if (hit.collider.gameObject != selectedObject && !hit.collider.isTrigger)
+            if (boxCastResults[i].collider.gameObject != selectedObject && !boxCastResults[i].collider.isTrigger)
             {
                 return true;
             }

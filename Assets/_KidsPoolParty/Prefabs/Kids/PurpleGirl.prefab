@@ -20718,7 +20718,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: abc2897daf0cf42328bd502e49feb992, type: 2}
+  - {fileID: 2100000, guid: f8d9e121113eb4bea842b9ba195df844, type: 2}
   - {fileID: 2100000, guid: 2833e3f0e630a4e6299933984b8505de, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -26041,7 +26041,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5023586704774613332}
-  - component: {fileID: 2657309181772898681}
+  - component: {fileID: 3968237530986933388}
   m_Layer: 0
   m_Name: kid2
   m_TagString: Untagged
@@ -26068,27 +26068,22 @@ Transform:
   - {fileID: 4123312491620636405}
   m_Father: {fileID: 7801159031368622341}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!95 &2657309181772898681
-Animator:
-  serializedVersion: 5
+--- !u!111 &3968237530986933388
+Animation:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7513151408096926075}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: ebbab98abc67a4bb59452eeba3ff617a, type: 3}
-  m_Controller: {fileID: 9100000, guid: bf0a1d9570bfc44369de3974dc308008, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  serializedVersion: 3
+  m_Animation: {fileID: -203655887218126122, guid: 6709e593d7edd418582ff703e225bc82, type: 3}
+  m_Animations:
+  - {fileID: -203655887218126122, guid: 6709e593d7edd418582ff703e225bc82, type: 3}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 1
 --- !u!1 &7926343827481070903
 GameObject:
   m_ObjectHideFlags: 0

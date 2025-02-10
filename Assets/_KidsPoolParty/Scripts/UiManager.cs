@@ -10,11 +10,15 @@ public class UiManager : MonoBehaviour
 {
     [SerializeField] private GameObject _winPanel;
     [SerializeField] private GameObject _losePanel;
-    [SerializeField]private GameObject navBar;
+    [SerializeField] private GameObject navBar;
     [SerializeField] private GameObject _btnNextLevel;
     [SerializeField] private GameObject _btnRestartLevel;
-   
-    
+    [SerializeField] private TextMeshProUGUI _textFPS; // TextMeshPro para mostrar el FPS
+
+    // Variables para calcular el FPS
+    private int _frameCount;
+    private float _deltaTime;
+    private float _fpsUpdateInterval = 1.0f; // Actualiza cada 1 segundo
 
     private void Start()
     {
@@ -31,12 +35,26 @@ public class UiManager : MonoBehaviour
         EventsManager.Instance.OnLosePanel -= ShowLosePanel;
     }
 
+    // Update se encarga de calcular y actualizar el FPS en el TextMeshPro
+    private void Update()
+    {
+        _deltaTime += Time.deltaTime;
+        _frameCount++;
+
+        if (_deltaTime >= _fpsUpdateInterval)
+        {
+            float fps = _frameCount / _deltaTime;
+            _textFPS.text = string.Format("FPS: {0:0.}", fps);
+            _frameCount = 0;
+            _deltaTime = 0f;
+        }
+    }
+
     public void ShowWinPanel()
     {
         _winPanel.SetActive(true);
         AnimateBtn(_btnNextLevel);
         HideNavBar();
-        
     }
     
     public void ShowLosePanel()
@@ -69,6 +87,7 @@ public class UiManager : MonoBehaviour
         GameManager.Instance.RestartLevel();
         HideLosePanel();
     }
+    
     private void ShowNavBar()
     {
         navBar.SetActive(true);
@@ -80,9 +99,8 @@ public class UiManager : MonoBehaviour
     }
 
     // Función que anima de forma "juicy" los elementos del panel
-    private void AnimateBtn( GameObject btn)
+    private void AnimateBtn(GameObject btn)
     {
-       
         btn.transform.localScale = Vector3.zero;
         btn.transform
             .DOScale(1f, 0.5f)
@@ -96,6 +114,4 @@ public class UiManager : MonoBehaviour
                     .SetLoops(-1, LoopType.Yoyo);
             });
     }
-    
-    
 }

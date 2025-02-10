@@ -9,8 +9,6 @@ public class KidBehaviourScript : MonoBehaviour
     private string kidName;
     private bool isJumping = false;
     public ObjectMover objectMover;
-   
-    
     [SerializeField] private List<GameObject> _trailWater;
     
     public string kidNames=> kidName;
