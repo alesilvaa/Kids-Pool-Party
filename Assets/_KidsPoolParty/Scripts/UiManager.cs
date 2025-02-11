@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
-using UnityEngine.Serialization;
 
 public class UiManager : MonoBehaviour
 {
@@ -13,12 +10,10 @@ public class UiManager : MonoBehaviour
     [SerializeField] private GameObject navBar;
     [SerializeField] private GameObject _btnNextLevel;
     [SerializeField] private GameObject _btnRestartLevel;
-    [SerializeField] private TextMeshProUGUI _textFPS; // TextMeshPro para mostrar el FPS
+    [SerializeField] private TextMeshProUGUI _textFPS; // Componente para mostrar el FPS
 
-    // Variables para calcular el FPS
-    private int _frameCount;
-    private float _deltaTime;
-    private float _fpsUpdateInterval = 1.0f; // Actualiza cada 1 segundo
+    // Variable para suavizar el valor del FPS
+    private float _fps;
 
     private void Start()
     {
@@ -38,16 +33,11 @@ public class UiManager : MonoBehaviour
     // Update se encarga de calcular y actualizar el FPS en el TextMeshPro
     private void Update()
     {
-        _deltaTime += Time.deltaTime;
-        _frameCount++;
-
-        if (_deltaTime >= _fpsUpdateInterval)
-        {
-            float fps = _frameCount / _deltaTime;
-            _textFPS.text = string.Format("FPS: {0:0.}", fps);
-            _frameCount = 0;
-            _deltaTime = 0f;
-        }
+        // Cálculo instantáneo del FPS
+        float currentFPS = 1f / Time.deltaTime;
+        // Suavizado del valor para evitar cambios bruscos
+        _fps = Mathf.Lerp(_fps, currentFPS, 0.1f);
+        _textFPS.text = string.Format("FPS: {0:0}", _fps);
     }
 
     public void ShowWinPanel()
