@@ -36,7 +36,7 @@ public class KidBehaviourScript : MonoBehaviour
     public IEnumerator DisableMovement()
     {
         Debug.Log("Kid: " + kidName + " is disabled");
-        yield return new WaitForSeconds(0.009f);
+        yield return new WaitForSeconds(0.005f);
         // Asegurar que no se siga ejecutando la interpolación
         objectMover.StopAllCoroutines();
 
