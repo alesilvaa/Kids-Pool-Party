@@ -1,50 +1,38 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class TimerUi : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _timerText;
 
-    // Tiempo en segundos (2 minutos = 120 segundos)
     private float timeRemaining = 120f;
     private bool timerIsRunning = false;
 
     private void Start()
     {
-        // Iniciamos el temporizador
         timerIsRunning = true;
+        StartCoroutine(UpdateTimer());
     }
 
-    private void Update()
+    private IEnumerator UpdateTimer()
     {
-        if (timerIsRunning)
+        while (timerIsRunning && timeRemaining > 0)
         {
-            if (timeRemaining > 0)
-            {
-                // Restamos el tiempo transcurrido desde el último frame
-                timeRemaining -= Time.deltaTime;
+            timeRemaining -= 1f;
+            int minutes = Mathf.FloorToInt(timeRemaining / 60);
+            int seconds = Mathf.FloorToInt(timeRemaining % 60);
+            _timerText.text = $"{minutes:00}:{seconds:00}";
 
-                // Aseguramos que no baje de 0
-                if (timeRemaining < 0)
-                    timeRemaining = 0;
+            yield return new WaitForSeconds(1f); // Espera 1 segundo antes de la siguiente actualización
+        }
 
-                // Convertimos los segundos restantes en minutos y segundos
-                int minutes = Mathf.FloorToInt(timeRemaining / 60f);
-                int seconds = Mathf.FloorToInt(timeRemaining % 60f);
+        timerIsRunning = false;
+        Debug.Log("¡El tiempo se ha agotado!");
 
-                // Actualizamos el texto del temporizador en formato MM:SS
-                _timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-            }
-            else
-            {
-                
-                timerIsRunning = false;
-                Debug.Log("¡El tiempo se ha agotado!");
-                if (!GameManager.Instance.isWinPlayer)
-                {
-                    EventsManager.Instance.LosePanel();
-                }
-            }
+        if (!GameManager.Instance.isWinPlayer)
+        {
+            EventsManager.Instance.LosePanel();
         }
     }
 }

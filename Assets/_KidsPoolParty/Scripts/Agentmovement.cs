@@ -8,8 +8,6 @@ using UnityEngine;
 public class Agentmovement : MonoBehaviour
 {
     [SerializeField] private GameObject momFBX;
-    [SerializeField] private AgentAuthoring agentAuthoring;
-    [SerializeField] private AgentAstarPathingAuthoring agentAstarPathingAuthoring;
     [SerializeField] private int degreeOfRotation;
     private bool once;
     private MomBehaviourScript momBehaviourScript;

@@ -11,13 +11,7 @@ GameObject:
   - component: {fileID: 6736750764998344145}
   - component: {fileID: 7429180647877445523}
   - component: {fileID: 2325333031414624382}
-  - component: {fileID: 4665772579579329892}
-  - component: {fileID: 5848343898252613393}
-  - component: {fileID: 7066657658314219720}
-  - component: {fileID: 810938259632625002}
-  - component: {fileID: 1778130255681259894}
   - component: {fileID: 7909444487394964301}
-  - component: {fileID: 7052491672051913577}
   m_Layer: 7
   m_Name: YellowMom
   m_TagString: Mom
@@ -77,119 +71,6 @@ MonoBehaviour:
   mom: {fileID: 11400000, guid: f7059bd6eb5df49b591ea4f7ef6865bd, type: 2}
   hands: {fileID: 5865736960157743970}
   animator: {fileID: 2315794293734479577}
---- !u!54 &4665772579579329892
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4844890687570306244}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
---- !u!114 &5848343898252613393
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4844890687570306244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 825ee44755f2e4846a6229365ed8d44c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MotionType: 3
-  Speed: 4.5
-  Acceleration: 8
-  AngularSpeed: 60
-  StoppingDistance: 0.1
-  AutoBreaking: 0
-  m_Layers: 1
---- !u!114 &7066657658314219720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4844890687570306244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0452fccc2db44e04c8e3fd8255536dc2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_LinkTraversalMode: 2
-  m_Path:
-    AutoRepath:
-      mode: 2
-      period: 2
-  m_ManagedState:
-    autoRepath:
-      mode: 2
-      period: 0.5
-      sensitivity: 10
-      maximumPeriod: 2
-      visualizeSensitivity: 0
-    rvoSettings:
-      agentTimeHorizon: 1
-      obstacleTimeHorizon: 0.5
-      maxNeighbours: 10
-      layer: 1
-      collidesWith: -1
-      priority: 0.5
-      debug: 0
-      locked: 0
-    pathfindingSettings:
-      graphMask:
-        value: -1
-      tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-      traversableTags: -1
-    enableLocalAvoidance: 0
-    enableGravity: 1
---- !u!114 &810938259632625002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4844890687570306244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d72058503702eb42aca97d680e69de1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Layers: 0
---- !u!114 &1778130255681259894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4844890687570306244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fed5c6dd07c7d6e4f857b420fa8f559a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Radius: 0.5
-  Height: 2
 --- !u!114 &7909444487394964301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,23 +84,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   momFBX: {fileID: 9045663314946168345}
-  agentAuthoring: {fileID: 5848343898252613393}
-  agentAstarPathingAuthoring: {fileID: 7066657658314219720}
---- !u!114 &7052491672051913577
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4844890687570306244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5412cfcb738c3f74b9a712077b4c4866, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Radius: 0.5
-  Weight: 1
-  m_Layers: -1
+  degreeOfRotation: 0
 --- !u!1 &5865736960157743970
 GameObject:
   m_ObjectHideFlags: 0
