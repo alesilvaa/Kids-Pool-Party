@@ -1116,6 +1116,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 8178351620731301009, guid: 9be368a40d5614bc4831660f9f4b0741, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 8178351620731301009, guid: 9be368a40d5614bc4831660f9f4b0741, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.29
+      objectReference: {fileID: 0}
     - target: {fileID: 8472496983764186866, guid: 9be368a40d5614bc4831660f9f4b0741, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -2263,11 +2271,11 @@ PrefabInstance:
     - target: {fileID: -5530032875526576791, guid: 04113d3f89a724832adf496d515a80e8, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: abc2897daf0cf42328bd502e49feb992, type: 2}
+      objectReference: {fileID: 2100000, guid: 0e9d98c7f55134765bb49d8686e8ff6a, type: 2}
     - target: {fileID: -4082838075143190094, guid: 04113d3f89a724832adf496d515a80e8, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: abc2897daf0cf42328bd502e49feb992, type: 2}
+      objectReference: {fileID: 2100000, guid: 0e9d98c7f55134765bb49d8686e8ff6a, type: 2}
     - target: {fileID: -1854472554765086458, guid: 04113d3f89a724832adf496d515a80e8, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -2279,7 +2287,7 @@ PrefabInstance:
     - target: {fileID: 8129408897316687839, guid: 04113d3f89a724832adf496d515a80e8, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: abc2897daf0cf42328bd502e49feb992, type: 2}
+      objectReference: {fileID: 2100000, guid: 0e9d98c7f55134765bb49d8686e8ff6a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -27345,13 +27353,13 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   colorGradientTexture: {fileID: 0}
-  shallowColor: {r: 0.015574937, g: 0.34707832, b: 0.6603774, a: 0.77254903}
-  deepColor: {r: 0.1860404, g: 0.61952436, b: 0.8396226, a: 0.65882355}
+  shallowColor: {r: 0.015574937, g: 0.3470746, b: 0.6603774, a: 0.77254903}
+  deepColor: {r: 0.18603685, g: 0.61952436, b: 0.8396226, a: 0.65882355}
   colorDepth: 2.59
-  horizonColor: {r: 0.18621841, g: 0.33955643, b: 0.745283, a: 1}
+  horizonColor: {r: 0.18621486, g: 0.3395527, b: 0.745283, a: 1}
   horizonDistance: 20
   shoreFade: 0
-  shoreColor: {r: 0, g: 0.98039216, b: 0.30184102, a: 0}
+  shoreColor: {r: 0, g: 0.98039216, b: 0.3018373, a: 0}
   shoreStrength: 0
   shoreBlend: 0
   shoreDepth: 0

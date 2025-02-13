@@ -31271,11 +31271,11 @@ PrefabInstance:
     - target: {fileID: 1630794972795428178, guid: 5f87c5444ad3948f19ce0aa67bdc66b3, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: f1f5171eaa10649f29f54fc59c6ad525, type: 2}
+      objectReference: {fileID: 2100000, guid: 14216d8f3c0b041899f4e7bdc043e307, type: 2}
     - target: {fileID: 2236237030686087061, guid: 5f87c5444ad3948f19ce0aa67bdc66b3, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: f1f5171eaa10649f29f54fc59c6ad525, type: 2}
+      objectReference: {fileID: 2100000, guid: 14216d8f3c0b041899f4e7bdc043e307, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -31357,7 +31357,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: b1c723c8bfce94f9381b3082eb066dee, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 0e9d98c7f55134765bb49d8686e8ff6a, type: 2}
+      objectReference: {fileID: 2100000, guid: 20800834b85d84662a9a025d521c8b58, type: 2}
     - target: {fileID: 919132149155446097, guid: b1c723c8bfce94f9381b3082eb066dee, type: 3}
       propertyPath: m_Name
       value: Swimming ring (1)
